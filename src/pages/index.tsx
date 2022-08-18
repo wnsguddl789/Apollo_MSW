@@ -1,9 +1,17 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import React from "react";
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
+import { GetServerSideProps } from "next";
 
-const Home: NextPage = () => {
+const Home: NextPage = ({ users }: any) => {
+  const fetchUsers = async () => {
+    await fetch("/users").then((res) => console.log(res));
+  };
+  React.useEffect(() => {
+    fetchUsers();
+  });
   return (
     <div className={styles.container}>
       <Head>
@@ -18,7 +26,7 @@ const Home: NextPage = () => {
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
+          Get started by editing{" "}
           <code className={styles.code}>pages/index.tsx</code>
         </p>
 
@@ -59,14 +67,28 @@ const Home: NextPage = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
+
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const res = await fetch("https://my.backend/users");
+//   if (res) {
+//     // const users = await
+//     // console.log(res);
+//     return {
+//       props: {},
+//     };
+//   }
+//   return {
+//     props: {},
+//   };
+// };
