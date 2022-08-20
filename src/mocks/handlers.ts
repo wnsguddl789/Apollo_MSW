@@ -1,18 +1,30 @@
-import { rest } from "msw";
-import { UserType } from "../types/userRepository";
+import { graphql } from 'msw';
 
-const users: UserType = {
-  email: "wnsguddl789@gmail.com",
-  password: "azxs4125",
-  accessToken: "1312155467346sadas",
+const user = {
+  avatar: 'https://avatars.githubusercontent.com/u/33216504?v=4',
+  name: 'Park JunHyeong',
+  age: 27,
+  gender: 'male',
 };
 
 export const handlers = [
-  rest.get("https://my.backend/users", (_req, res, ctx) => {
-    return res(ctx.json<UserType>(users));
+  graphql.mutation('Login', (req, res, ctx) => {
+    const { username } = req.variables;
+
+    return res(
+      ctx.data({
+        login: {
+          username,
+        },
+      })
+    );
   }),
 
-  rest.get("/users", (_req, res, ctx) => {
-    return res(ctx.json<UserType>(users));
+  graphql.query('fetchUserInfo', (req, res, ctx) => {
+    return res(
+      ctx.data({
+        user,
+      })
+    );
   }),
 ];

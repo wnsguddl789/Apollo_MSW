@@ -1,13 +1,21 @@
-import React from "react";
-import "../styles/globals.css";
-import type { AppProps } from "next/app";
+import React from 'react';
+import { ApolloProvider } from '@apollo/client';
+import type { AppProps } from 'next/app';
 
-if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
-  import("../mocks");
+import '../styles/globals.css';
+import { useApollo } from '../lib/apolloClient';
+
+if (process.env.NEXT_PUBLIC_API_MOCKING === 'enabled') {
+  import('../mocks');
 }
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+export default function MyApp({ Component, pageProps }: AppProps) {
+  const client = useApollo(pageProps);
+  return (
+    <ApolloProvider client={client}>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+        <Component {...pageProps} />
+      </div>
+    </ApolloProvider>
+  );
 }
-
-export default MyApp;
